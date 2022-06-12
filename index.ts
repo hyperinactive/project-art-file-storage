@@ -1,20 +1,21 @@
 import dotenv from "dotenv";
-import express, { Request, Response } from "express";
+import express, {  } from "express";
+import { defaultErrorHandler } from "./src/errorHandlers/defaultErrorHandler";
+import { nonexistentUrl } from "./src/middleware";
 import { authorize } from "./src/middleware/authorize";
+import router from "./src/routes";
 
 dotenv.config();
 
 const port = process.env.PORT || 4000;
 const app = express();
 
+app.use("/uploads", express.static("files"));
 app.use(authorize);
 
-app.get("*", (req: Request, res: Response) => {
-    res.status(200).json({ message: "getting stuff" });
-});
+app.use("/storage", router);
 
-app.post("*", (req, res) => {
-    res.status(201).json({ message: "posting stuff" });
-});
+app.use(nonexistentUrl);
+app.use(defaultErrorHandler);
 
 app.listen(port, () => console.log(`[server]: Server is running at http://localhost:${port}`));
