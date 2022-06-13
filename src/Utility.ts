@@ -8,3 +8,10 @@ export enum Methods {
     TRACE = "TRACE",
     PATCH = "PATCH",
 }
+
+export enum MimeTypes {
+    JPEG = "image/jpeg",
+    JPG = "image/jpg",
+    PNG = "image/png",
+    GIF = " image/gif",
+}

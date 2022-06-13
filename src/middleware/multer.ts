@@ -1,19 +1,24 @@
 import multer from "multer";
+import { MimeTypes } from "../Utility";
 import { MulterFilter } from "./multerTypes";
+import { v4 as uuidv4 } from "uuid";
 
 export const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         // error, destination
-        cb(null, "./files/");
+        const destination = appRoot + "\\files";
+        console.log(destination, "dest");
+        cb(null,  "./files");
     },
     filename: function (req, file, cb) {
         // error, file name
-        cb(null, Date.now() + file.originalname);
+        const filename = uuidv4() + "." + file.mimetype.split("/")[1];
+        cb(null, filename);
     },
 });
 
 const fileFilter: MulterFilter = (req, file, cb) => {
-    file.mimetype === "image/jpeg" || file.mimetype === "image/png" ? cb(null, true) : cb(null, false);
+    file.mimetype === MimeTypes.JPEG || file.mimetype === MimeTypes.PNG ? cb(null, true) : cb(null, false);
 };
 
 // init the multer, passing in an object will set its config
